@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Stack } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Heading, Stack, Text } from '@chakra-ui/react';
 import { Input } from '../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -94,6 +94,19 @@ export default function SignIn() {
             </Stack>
 
             <Button isLoading={isSubmitting} type="submit" mt="6" colorScheme="purple">Entrar</Button>
+
+            {/* <Flex
+              py="4"
+              align="center"
+              justify="space-between"
+              w="100%"
+            >
+              <Divider />
+              <Text color="gray.500" marginX="2">or</Text>
+              <Divider />
+            </Flex>
+
+            <Button isLoading={isSubmitting} type="submit" colorScheme="purple">Google</Button> */}
           </Flex>
         </Flex>
       </main>
