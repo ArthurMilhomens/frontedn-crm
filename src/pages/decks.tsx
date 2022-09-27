@@ -1,14 +1,10 @@
-import { Box, Image, Flex, useBreakpointValue, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Badge, HStack, Text, ListItem, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Accordion } from "@chakra-ui/react";
 import Head from "next/head";
+import Deck from "../components/Deck";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 export default function Decks() {
-  const isWideVersion = useBreakpointValue({
-    base: false,
-    lg: true
-  })
-
   const list = [
     { qtd: 1, name: "Teneb, the Harvester" },
     { qtd: 4, name: "Lotus Cobra" },
@@ -54,6 +50,11 @@ export default function Decks() {
     { qtd: 1, name: "Temple Garden" },
     { qtd: 1, name: "Temple of the Dragon Queen" },
     { qtd: 1, name: "Primevals' Glorious Rebirth" },
+  ];
+
+  const decks = [
+    { name: '5 Colors', colors: ['W', 'G', 'R', 'B', 'U'], cards: list },
+    { name: 'Eldrazi', colors: ['C', 'U'], cards: list }
   ]
 
   return (
@@ -69,60 +70,11 @@ export default function Decks() {
             <Sidebar />
 
             <Accordion allowToggle flex="1" alignItems="flex-start">
-              <AccordionItem p={["4", "6"]} bg="gray.800" borderRadius={8} pb="4" border="none" my="4">
-                <h2>
-                  <AccordionButton>
-                    <HStack flex='1' textAlign='left' spacing="4">
-                      <HStack>
-                        <Text>5 Colors -</Text>
-                        <HStack spacing="1">
-                          <Image w="4" h="4" src='mana/W.svg' alt='White mana' />
-                          <Image w="4" h="4" src='mana/U.svg' alt='Blue mana' />
-                          <Image w="4" h="4" src='mana/B.svg' alt='Black mana' />
-                          <Image w="4" h="4" src='mana/R.svg' alt='Red mana' />
-                          <Image w="4" h="4" src='mana/G.svg' alt='Green mana' />
-                        </HStack>
-                      </HStack>
-                      {isWideVersion && <Badge colorScheme='red' >Most popular</Badge>}
-                    </HStack>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  {!isWideVersion && <Badge colorScheme='red' mb="4">Most popular</Badge>}
-                  <SimpleGrid columns={[1, 2]} spacing="2" w={["100%", "70%"]}>
-                    {list.map((card, index) => (
-                      <Box key={index}>
-                        {card.qtd} - {card.name}
-                      </Box>
-                    ))}
-                  </SimpleGrid>
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem p={["4", "6"]} bg="gray.800" borderRadius={8} pb="4" border="none">
-                <h2>
-                  <AccordionButton>
-                    <HStack flex='1' textAlign='left' spacing="4">
-                      <HStack>
-                        <Text>Eldrazi -</Text>
-                        <HStack spacing="1">
-                          <Image w="4" h="4" src='mana/C.svg' alt='Coloress mana' />
-                          <Image w="4" h="4" src='mana/U.svg' alt='Blue mana' />
-                        </HStack>
-                      </HStack>
-                    </HStack>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                  commodo consequat.
-                </AccordionPanel>
-              </AccordionItem>
+              {decks.map((deck) => (
+                <Deck key={deck.name} deck={deck} />
+              ))}
             </Accordion>
+
           </Flex>
         </Box>
       </main>

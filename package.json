@@ -19,6 +19,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.36.0",
     "react-icons": "^4.4.0",
+    "react-image-tooltip": "^4.0.2",
     "three": "^0.144.0",
     "vanta": "^0.5.24",
     "yup": "^0.32.11"
