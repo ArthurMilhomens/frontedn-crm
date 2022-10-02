@@ -72,7 +72,7 @@ export default function SignIn() {
           <Heading
             bgGradient='linear(to-l, #a0a0a0, #f7f7f7)'
             bgClip='text'
-            fontSize='8xl'
+            fontSize='6xl'
             fontFamily="Kanit"
             p="2"
           >

@@ -1,8 +1,10 @@
-import { Box, Flex, Accordion } from "@chakra-ui/react";
+import { Box, Flex, Accordion, Button, Icon } from "@chakra-ui/react";
 import Head from "next/head";
-import Deck from "../components/Deck";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Link from "next/link";
+import { RiAddLine } from "react-icons/ri";
+import Deck from "../../components/Deck";
+import Header from "../../components/Header";
+import Sidebar from "../../components/Sidebar";
 
 export default function Decks() {
   const list = [
@@ -65,15 +67,27 @@ export default function Decks() {
       <main>
         <Box>
           <Header />
-
           <Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
             <Sidebar />
 
-            <Accordion allowToggle flex="1" alignItems="flex-start">
-              {decks.map((deck) => (
-                <Deck key={deck.name} deck={deck} />
-              ))}
-            </Accordion>
+            <Flex alignItems="flex-end" direction="column" w="100%">
+              <Link href="/decks/create" passHref>
+                <Button
+                  as="a"
+                  size="sm"
+                  fontSize="sm"
+                  colorScheme="purple"
+                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                >
+                  Criar deck
+                </Button>
+              </Link>
+              <Accordion allowToggle flex="1" alignItems="flex-start" w="100%">
+                {decks.map((deck) => (
+                  <Deck key={deck.name} deck={deck} mark={deck.name === '5 Colors'} />
+                ))}
+              </Accordion>
+            </Flex>
 
           </Flex>
         </Box>

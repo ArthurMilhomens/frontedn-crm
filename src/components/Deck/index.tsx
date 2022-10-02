@@ -8,14 +8,15 @@ interface Card {
 interface Deck {
     name: string;
     colors: string[];
-    cards: Card[]
+    cards: Card[];
 }
 
 interface DeckProps {
     deck: Deck;
+    mark?: boolean;
 }
 
-export default function Deck({ deck }: DeckProps) {
+export default function Deck({ deck, mark }: DeckProps) {
     const isWideVersion = useBreakpointValue({
         base: false,
         lg: true
@@ -33,12 +34,12 @@ export default function Deck({ deck }: DeckProps) {
                             ))}
                         </HStack>
                     </HStack>
-                    {isWideVersion && <Badge colorScheme='red' >Most popular</Badge>}
+                    {isWideVersion && (mark && <Badge colorScheme='red' >Most popular</Badge>)}
                 </HStack>
                 <AccordionIcon />
             </AccordionButton>
             <AccordionPanel pb={4}>
-                {!isWideVersion && <Badge colorScheme='red' mb="4">Most popular</Badge>}
+                {!isWideVersion && (mark && <Badge colorScheme='red' mb="4">Most popular</Badge>)}
                 <SimpleGrid columns={[1, 4]} spacing="2" w="100%">
                     {deck.cards.map((card, index) => (
                         <Box key={index}>
