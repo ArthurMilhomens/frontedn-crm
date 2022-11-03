@@ -120,7 +120,7 @@ export default function SignIn() {
 
           </Flex> */}
           <GoogleLogin
-            clientId="796908931521-a50ujrl2fpmnu9n2peuppg7ni94hnpkr.apps.googleusercontent.com"
+            clientId="796908931521-nph4ou770oths2k51u21k813luem6qkl.apps.googleusercontent.com"
             // buttonText="Login"
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
