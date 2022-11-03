@@ -1,12 +1,17 @@
-import { Box, Button, Divider, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { useEffect, useRef, useState } from 'react';
+
+import { Box, Button, Divider, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import Head from 'next/head';
+
 import { Input } from '../components/Form/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Head from 'next/head';
-import { useEffect, useRef, useState } from 'react';
-import CELLS from 'vanta/dist/vanta.cells.min';
-import * as THREE from 'three';
+// import CELLS from 'vanta/dist/vanta.cells.min';
+// import * as THREE from 'three';
+
+import { GoogleLogin } from 'react-google-login';
 
 type SignInFormData = {
   email: string;
@@ -22,34 +27,39 @@ export default function SignIn() {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(signInFormSchema)
   });
-  const [vantaEffect, setVantaEffect] = useState(null)
-  const myRef = useRef(null)
 
-  const handleSignIn: SubmitHandler<SignInFormData> = (data) => {
-    console.log(data)
+  // const [vantaEffect, setVantaEffect] = useState(null)
+  // const myRef = useRef(null)
+
+  // const handleSignIn: SubmitHandler<SignInFormData> = (data) => {
+  //   console.log(data)
+  // }
+
+  // useEffect(() => {
+  //   if (!vantaEffect) {
+  //     setVantaEffect(CELLS({
+  //       el: myRef.current,
+  //       THREE: THREE,
+  //       mouseControls: true,
+  //       touchControls: true,
+  //       gyroControls: false,
+  //       minHeight: 200.00,
+  //       minWidth: 200.00,
+  //       scale: 1.00,
+  //       color1: 0x39008c,
+  //       color2: 0x5500a2,
+  //       size: 0.20,
+  //       speed: 0.00
+  //     }))
+  //   }
+  //   return () => {
+  //     if (vantaEffect) vantaEffect.destroy()
+  //   }
+  // }, [vantaEffect])
+
+  const responseGoogle = (response) => {
+    console.log(response);
   }
-
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(CELLS({
-        el: myRef.current,
-        THREE: THREE,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        color1: 0x39008c,
-        color2: 0x5500a2,
-        size: 0.20,
-        speed: 0.00
-      }))
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy()
-    }
-  }, [vantaEffect])
 
   return (
     <>
@@ -61,28 +71,30 @@ export default function SignIn() {
           w="100vw"
           h="100vh"
           align="center"
-          justify="center"
+          justify="space-between"
           direction="column"
           backgroundImage="url('/Fundo.png')"
           backgroundPosition="center"
           backgroundRepeat="no-repeat"
           backgroundSize="cover"
-          ref={myRef}
+          p="20"
+        // ref={myRef}
         >
           <Heading
             bgGradient='linear(to-l, #a0a0a0, #f7f7f7)'
             bgClip='text'
-            fontSize='6xl'
+            fontSize='8xl'
             fontFamily="Kanit"
             p="2"
           >
             CRM
           </Heading>
-          <Flex
+          {/* <Flex
             as="form"
             w="100%"
             maxW={360}
-            bg="gray.800"
+            bg="white.200"
+            backdropFilter="blur(2px)"
             p="8"
             borderRadius={8}
             flexDir="column"
@@ -95,7 +107,7 @@ export default function SignIn() {
 
             <Button isLoading={isSubmitting} type="submit" mt="6" colorScheme="purple">Entrar</Button>
 
-            {/* <Flex
+            <Flex
               py="4"
               align="center"
               justify="space-between"
@@ -106,8 +118,18 @@ export default function SignIn() {
               <Divider />
             </Flex>
 
-            <Button isLoading={isSubmitting} type="submit" colorScheme="purple">Google</Button> */}
-          </Flex>
+          </Flex> */}
+          <GoogleLogin
+            clientId="796908931521-a50ujrl2fpmnu9n2peuppg7ni94hnpkr.apps.googleusercontent.com"
+            // buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            scope="email"
+            cookiePolicy={'single_host_origin'}
+            render={renderProps => (
+              <Button isLoading={isSubmitting} mb="20" colorScheme="purple">Google</Button>
+            )}
+          />
         </Flex>
       </main>
     </>

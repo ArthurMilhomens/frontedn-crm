@@ -3,6 +3,7 @@ import { RiMenuLine } from "react-icons/ri";
 import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
 import Logo from "./Logo";
 import Profile from "./Profile";
+import SearchBox from "./SearchBox";
 
 export default function Header() {
     const { onOpen } = useSidebarDrawer();
@@ -35,7 +36,8 @@ export default function Header() {
 
                 </IconButton>
             )}
-            <Logo />
+            {isWideVersion && <Logo />}
+            <SearchBox />
             <Flex align="center" ml="auto">
                 <Profile showProfileData={isWideVersion} />
             </Flex>

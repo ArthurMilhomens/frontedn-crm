@@ -62,7 +62,7 @@ export default function Decks() {
   return (
     <>
       <Head>
-        <title>Decks - CRM</title>
+        <title>Decks - MTGL</title>
       </Head>
       <main>
         <Box>

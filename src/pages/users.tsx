@@ -14,7 +14,7 @@ export default function UsersList() {
   return (
     <>
       <Head>
-        <title>Usuários - CRM</title>
+        <title>Usuários - MTGL</title>
       </Head>
       <main>
         <Box>

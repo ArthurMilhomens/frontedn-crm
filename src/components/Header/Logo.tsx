@@ -1,15 +1,15 @@
-import { Heading, Text } from '@chakra-ui/react'
+import { Heading } from '@chakra-ui/react'
 
 export default function Logo() {
   return (
     <Heading
       bgGradient='linear(to-l, #a0a0a0, #f7f7f7)'
       bgClip='text'
-      fontSize='4xl'
+      fontSize='2xl'
       fontFamily="Kanit"
       p="2"
     >
-      CRM
+      MTG League
     </Heading>
   );
 }

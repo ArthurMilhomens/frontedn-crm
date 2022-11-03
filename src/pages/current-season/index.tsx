@@ -7,7 +7,7 @@ export default function CurrentSeason() {
     return (
         <>
             <Head>
-                <title>Season - CRM</title>
+                <title>Season - MTGL</title>
             </Head>
             <main>
                 <Flex direction="column" h="100vh">
