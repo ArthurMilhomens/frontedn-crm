@@ -15,7 +15,7 @@ export const theme = extendTheme({
             "50": "#EEEEF2",
         },
         white: {
-            "200": "rgba(255, 255, 255, 0.1)"
+            "200": "rgba(255, 255, 255, 0.02)"
         }
     },
     fonts: {

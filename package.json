@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.10.4",
     "@hookform/resolvers": "^2.9.8",
     "@react-oauth/google": "^0.4.0",
+    "axios": "^1.2.1",
     "framer-motion": "^7.6.4",
     "next": "12.3.1",
     "react": "18.2.0",
@@ -22,7 +23,9 @@
     "react-hook-form": "^7.36.0",
     "react-icons": "^4.4.0",
     "react-image-tooltip": "^4.0.2",
+    "react-query": "^3.39.2",
     "three": "^0.144.0",
+    "universal-cookie": "^4.0.4",
     "vanta": "^0.5.24",
     "yup": "^0.32.11"
   },
