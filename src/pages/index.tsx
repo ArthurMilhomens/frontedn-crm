@@ -35,17 +35,17 @@ export default function SignIn() {
 
   const handleCreateAccount = useMutation(async (data: SignInFormData) => {
     const formData = new FormData();
-    const json = JSON.stringify(data);
-    const blob = new Blob([json], {
-      type: 'application/json'
-    });
 
     formData.append('image', data.profileImage);
-    // formData.append('body', blob);
 
-    const response = await api.post('users/create', { ...data, formData }, { headers: { 'Content-Type': 'multipart/form-data' } });
+    const response = await api.post('users/create', {
+      email: data.email,
+      name: data.name,
+      password: data.password,
+    });
+    const imageResponse = await api.put(`users/image?id=${response.data.id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
-    cookies.set('user', response.data, { path: '/' });
+    cookies.set('user', imageResponse.data, { path: '/' });
 
     return response.data
   }, {

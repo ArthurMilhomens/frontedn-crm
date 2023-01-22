@@ -30,16 +30,6 @@ export default function FormLogin({
     const [image, setImage] = useState<string>();
     const [imageBlob, setImageBlob] = useState<Blob>();
 
-
-    const changeImage = (blob: Blob) => {
-        setImageBlob(blob);
-        // reader.readAsDataURL(blob);
-        // reader.onloadend = function () {
-        //     setImage(reader.result.toString());
-        //     console.log(reader.result);
-        // }
-    }
-
     const signInFormSchema = yup.object({
         email: yup.string().required('E-mail obrigatório').email("E-mail inválido"),
         password: yup.string().required('Senha obrigatória'),
@@ -55,6 +45,12 @@ export default function FormLogin({
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         resolver: yupResolver(isOpen ? createAccountFormSchema : signInFormSchema)
     });
+
+    const changeImage = (blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        setImageBlob(blob);
+        setImage(url);
+    }
 
     const handleFormSubmit: SubmitHandler<SignInFormData> = async (data) => {
         isOpen

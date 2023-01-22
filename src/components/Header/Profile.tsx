@@ -8,10 +8,11 @@ interface ProfileProps {
 export default function Profile({ showProfileData }: ProfileProps) {
   const cookies = new Cookies();
   const user = cookies.get("user");
+  const userAvatar = "http://localhost:3333/images/" + user?.profileImage;
 
   return (
     <Flex align="center">
-      <Avatar size="md" name={user?.name} bgColor="purple.500" src={user?.profileImage} />
+      <Avatar size="md" name={user?.name} bgColor="purple.500" src={userAvatar} />
       {showProfileData && <Box ml="4" textAlign="left">
         <Text>{user?.name}</Text>
         <Text color="gray.300" fontSize="small">
