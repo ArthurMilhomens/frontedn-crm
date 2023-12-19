@@ -24,7 +24,7 @@
     "react-icons": "^4.4.0",
     "react-image-tooltip": "^4.0.2",
     "react-query": "^3.39.2",
-    "three": "^0.144.0",
+    "three": "^0.159.0",
     "universal-cookie": "^4.0.4",
     "vanta": "^0.5.24",
     "yup": "^0.32.11"
@@ -35,6 +35,7 @@
     "@types/three": "^0.144.0",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.1",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.3",
+    "vite": "^5.0.10"
   }
 }

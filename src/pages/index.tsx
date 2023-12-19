@@ -6,6 +6,7 @@ import { api } from '../service/api';
 import { useMutation } from 'react-query';
 import { queryClient } from '../service/queryClient';
 import router from 'next/router';
+import axios from 'axios';
 
 type SignInFormData = {
   name?: string;
@@ -24,6 +25,8 @@ export default function SignIn() {
       password: data.password,
     });
     cookies.set('user', response.data, { path: '/' })
+
+    api.defaults.headers.common['Authorization'] = `${response.data.accessToken}`
 
     return response.data
   }, {
@@ -80,7 +83,7 @@ export default function SignIn() {
             fontFamily="Kanit"
             p="2"
           >
-            CRM
+            MTG League
           </Heading>
           <FormLogin
             handleSignIn={handleSignIn}
