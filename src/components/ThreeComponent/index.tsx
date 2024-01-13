@@ -4,6 +4,7 @@ import { OrbitControls } from "three/examples/jsm/Addons";
 
 interface ThreeComponentProps {
   image: string;
+  backSideImage?: string;
 }
 
 export default function ThreeComponent() {
@@ -27,7 +28,7 @@ export default function ThreeComponent() {
 
     //Setting scene size
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(10, 7);
     document.body.appendChild(renderer.domElement);
 
     //Card geometry
@@ -38,7 +39,7 @@ export default function ThreeComponent() {
       "https://cards.scryfall.io/large/front/d/e/deb3721d-fba1-444f-8b31-1cd10c94c4a0.jpg?1702429246"
     );
     var backSideTexture = new THREE.TextureLoader().load(
-      "https://cards.scryfall.io/large/front/e/0/e03dac86-63a0-4957-95bb-1b228003bc13.jpg?1702429249"
+      "/magic.jpg"
     );
 
     //Applying material to sides
@@ -68,8 +69,8 @@ export default function ThreeComponent() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.maxDistance = 2
     controls.minDistance = 2
-    controls.maxPolarAngle = 1.5
-    controls.minPolarAngle = 1.5
+    controls.maxPolarAngle = 1.55
+    controls.minPolarAngle = 1.55
     controls.update();
 
     function onWindowResize() {

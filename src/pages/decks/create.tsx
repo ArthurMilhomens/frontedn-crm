@@ -8,14 +8,12 @@ import {
   HStack,
   SimpleGrid,
   Textarea,
-  Toast,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import * as yup from "yup";
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
 import { Input } from "../../components/Form/Input";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
@@ -165,11 +163,12 @@ export default function CreateDeck() {
                       as="a"
                       variant="ghost"
                       _hover={{ bgColor: "gray.700" }}
+                      disabled={isSubmitting}
                     >
                       Cancelar
                     </Button>
                   </Link>
-                  <Button type="submit" isLoading={false} colorScheme="purple">
+                  <Button type="submit" isLoading={isSubmitting} colorScheme="purple" disabled={isSubmitting}>
                     Salvar
                   </Button>
                 </HStack>

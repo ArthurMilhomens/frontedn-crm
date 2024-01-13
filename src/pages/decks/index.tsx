@@ -7,6 +7,7 @@ import Sidebar from "../../components/Sidebar";
 import { api } from "../../service/api";
 import { useEffect, useState } from "react";
 import Deck from "../../components/Deck";
+import { useDecks } from "../../service/hooks/useDeck";
 
 interface Card {
   qtd: number;
@@ -28,6 +29,7 @@ interface Deck {
 
 export default function Decks() {
   const [decks, setDecks] = useState<Deck[]>([]);
+  const { data, isLoading, error, isFetching } = useDecks();
 
   // const list = [
   //   { qtd: 1, name: "Teneb, the Harvester" },
@@ -81,19 +83,19 @@ export default function Decks() {
   //   { name: 'Eldrazi', colors: ['C', 'U'], cards: list }
   // ]
 
-  const getDecks = async () => {
-    await api.get('/decks')
-      .then((response) => {
-        setDecks(response.data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  };
+  // const getDecks = async () => {
+  //   await api.get('/decks')
+  //     .then((response) => {
+  //       setDecks(response.data)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //     })
+  // };
 
-  useEffect(() => {
-    getDecks();
-  }, [])
+  // useEffect(() => {
+  //   getDecks();
+  // }, [])
 
   return (
     <>
@@ -119,7 +121,7 @@ export default function Decks() {
                 </Button>
               </Link>
               <Accordion allowToggle flex="1" alignItems="flex-start" w="100%">
-                {decks.map((deck) => (
+                {data?.decks.map((deck) => (
                   <Deck key={deck.id} deck={deck} mark={deck.name === '5 Colors'} />
                 ))}
               </Accordion>
