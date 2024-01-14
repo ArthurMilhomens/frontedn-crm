@@ -13,14 +13,18 @@ import {
   PopoverTrigger,
   PopoverContent,
   Popover,
-  Button,
   Icon,
   Stack,
+  IconButton,
+  useDisclosure,
+  Flex,
+  Divider,
 } from "@chakra-ui/react";
-import ThreeComponent from "../ThreeComponent";
 import Link from "next/link";
 import { RiPencilLine } from "react-icons/ri";
 import { TypeDeck } from "../../models/deck";
+import { useState } from "react";
+import CardLegalities from "../CardLegalities";
 
 interface Card {
   qtd: number;
@@ -46,12 +50,19 @@ interface DeckProps {
 }
 
 export default function Deck({ deck, mark }: DeckProps) {
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const [element, setElement] = useState<number | null>(null);
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
   const qtdCards = deck.cards.reduce((acc, card) => acc + Number(card.qtd), 0);
+
+  const handleOpenCardDetails = (cardIndex: number) => {
+    setElement(cardIndex);
+    onToggle();
+  };
 
   return (
     <AccordionItem
@@ -64,8 +75,11 @@ export default function Deck({ deck, mark }: DeckProps) {
     >
       <AccordionButton>
         <HStack flex="1" textAlign="left" spacing="4">
-          <HStack>
-            <Text>{deck.name} - {qtdCards}</Text>
+          <HStack spacing={4}>
+            <Text fontSize="18">
+              {deck.name}
+            </Text>
+            <Divider orientation="vertical" color="red" h="4" />
             <HStack spacing="1">
               {deck.colors.map((color) => (
                 <Image
@@ -90,12 +104,44 @@ export default function Deck({ deck, mark }: DeckProps) {
             Most popular
           </Badge>
         )}
+        <HStack spacing="8" alignSelf="flex-end" marginY="4">
+          <Badge colorScheme="whiteAlpha" fontSize="14" color="purple.200">
+            {qtdCards} cartas
+          </Badge>
+          <Link href={`/decks/edit/${deck.id}`} passHref>
+            <IconButton
+              as="a"
+              size="sm"
+              fontSize="sm"
+              colorScheme="purple"
+              // leftIcon={}
+              variant="solid"
+              alignSelf="flex-end"
+              aria-label="edit"
+            >
+              <Icon as={RiPencilLine} fontSize="20" />
+            </IconButton>
+          </Link>
+        </HStack>
         <SimpleGrid columns={[1, 4]} spacing="2" w="100%">
           {deck.cards.map((cardObject, index) => (
-            <Popover key={index}>
+            <Popover
+              key={index}
+              isOpen={element === index && isOpen}
+              onClose={element === index && onClose}
+            >
               <PopoverTrigger>
                 <Box>
-                  {cardObject.qtd} - {cardObject.card.name}
+                  <Text
+                    onMouseEnter={() => handleOpenCardDetails(index)}
+                    onMouseLeave={onClose}
+                    w="fit-content"
+                    _hover={{
+                      color: "purple.400"
+                    }}
+                  >
+                    {cardObject.qtd} - {cardObject.card.name}
+                  </Text>
                 </Box>
               </PopoverTrigger>
               <PopoverContent
@@ -114,31 +160,16 @@ export default function Deck({ deck, mark }: DeckProps) {
                   src={cardObject.card.image_uris}
                   maxW={[300, 400]}
                 />
-                <Stack p={4}>
+                <Flex direction="column" p={4}>
                   <Text fontWeight="semibold">{cardObject.card.name}</Text>
-                  <Text fontSize={12}>{cardObject.card.oracle_text}</Text>
-                </Stack>
+                  <Text fontSize={12}>{cardObject.card.type_line}</Text>
+                  <Text fontSize={12} mt="20px">{cardObject.card.oracle_text}</Text>
+                  <CardLegalities legalities={cardObject.card.legalities} marginTop="auto" />
+                </Flex>
               </PopoverContent>
             </Popover>
           ))}
         </SimpleGrid>
-        <Link href={`/decks/edit/${deck.id}`} passHref>
-          <Button
-            as="a"
-            size="sm"
-            fontSize="sm"
-            colorScheme="purple"
-            leftIcon={<Icon as={RiPencilLine} fontSize="20" />}
-            variant="outline"
-            alignSelf="flex-end"
-            _hover={{
-              bgColor: "purple.500",
-              color: "white",
-            }}
-          >
-            Editar
-          </Button>
-        </Link>
       </AccordionPanel>
     </AccordionItem>
   );

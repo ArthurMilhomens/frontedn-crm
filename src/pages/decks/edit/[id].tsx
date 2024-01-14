@@ -23,6 +23,7 @@ import {
   import { useMutation } from "react-query";
   import { queryClient } from "../../../service/queryClient";
   import router from "next/router";
+import { useDecks } from "../../../service/hooks/useDeck";
   
   type Card = {
     qtd: string;
@@ -42,13 +43,15 @@ import {
   export default function EditDeck() {
     const toast = useToast();
     const deckId = router.query.id?.toString();
+    const { data, isLoading, error, isFetching } = useDecks();
+    const deck = data.decks.find(deck => deck.id === deckId);
 
     const createDeckFormSchema = yup
       .object({
         name: yup
           .string()
           .required("Nome obrigatório"),
-        deck: yup.string().required("Senha obrigatória"),
+        deck: yup.string().required("Deck necessário."),
       })
       .required();
   
@@ -62,18 +65,18 @@ import {
   
     const handleSubmitDeck = useMutation(
       async (data: SubmitDeckFormData) => {
-        const response = await api.post("/decks/create", data);
+        const response = await api.put(`/decks/update?id=${deckId}`, data);
       },
       {
         onSuccess: () => {
           toast({
-              title: 'Deck cadastrado.',
+              title: 'Deck atualizado.',
               status: 'success',
               duration: 3000,
               isClosable: true,
               position: 'top-right'
             })
-          queryClient.invalidateQueries("users");
+          queryClient.invalidateQueries("decks");
           router.push("/decks");
         },
       }
@@ -102,7 +105,7 @@ import {
         cards: cardsToSubmit,
       });
     };
-  
+
     return (
       <>
         <Head>
@@ -123,7 +126,7 @@ import {
               p={["6", "8"]}
             >
               <Heading size="lg" fontWeight="normal">
-                Editar deck
+                Editar deck - {deck?.name}
               </Heading>
   
               <Divider my="6" borderColor="gray.700" />
@@ -134,6 +137,7 @@ import {
                     name="name"
                     label="Nome"
                     type="text"
+                    defaultValue={deck?.name}
                     error={errors.name}
                     {...register("name")}
                   />
@@ -150,6 +154,7 @@ import {
                     focusBorderColor="purple.500"
                     bgColor="gray.900"
                     variant="filled"
+                    defaultValue={deck?.cards.map((card) => `${card.qtd.toString()} ${card.card.name}\n`).join("")}
                     {...register("deck")}
                     _hover={{
                       bgColor: "gray.900",
