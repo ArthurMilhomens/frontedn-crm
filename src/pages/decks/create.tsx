@@ -72,7 +72,7 @@ export default function CreateDeck() {
             isClosable: true,
             position: 'top-right'
           })
-        queryClient.invalidateQueries("users");
+        queryClient.invalidateQueries("decks/user");
         router.push("/decks");
       },
     }

@@ -13,7 +13,7 @@ export async function getDecks(): Promise<GetDecksResponse> {
 }
 
 export function useDecks() {
-    return useQuery(['decks'], () => getDecks(), {
+    return useQuery(['decks/user'], () => getDecks(), {
         staleTime: 1000 * 60 * 10, // 10 minutes
     });
 }
