@@ -1,3 +1,4 @@
+'use client'
 import {
     Box,
     Button,
@@ -24,6 +25,7 @@ import {
   import { queryClient } from "../../../service/queryClient";
   import router from "next/router";
 import { useDecks } from "../../../service/hooks/useDeck";
+import { useEffect, useState } from "react";
   
   type Card = {
     qtd: string;
@@ -42,9 +44,13 @@ import { useDecks } from "../../../service/hooks/useDeck";
   
   export default function EditDeck() {
     const toast = useToast();
-    const deckId = router.query.id?.toString();
+    const [deckId, setDeckId] = useState('');
     const { data, isLoading, error, isFetching } = useDecks();
-    const deck = data.decks.find(deck => deck.id === deckId);
+    const deck = data?.decks?.find(deck => deck.id === deckId);
+
+    useEffect(() => {
+      setDeckId(router.query.id?.toString());
+    }, [])
 
     const createDeckFormSchema = yup
       .object({

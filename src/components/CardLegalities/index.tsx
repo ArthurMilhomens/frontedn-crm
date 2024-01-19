@@ -27,8 +27,8 @@ export default function CardLegalities({ legalities, ...props }: CardLegalitiesP
   return (
     <HStack {...props}>
       <Stack spacing={1}>
-        {col1.map((mode) => (
-          <HStack>
+        {col1.map((mode, index) => (
+          <HStack key={index}>
             <Badge
               colorScheme={
                 legalities.includes(mode.toLocaleLowerCase())
@@ -48,8 +48,8 @@ export default function CardLegalities({ legalities, ...props }: CardLegalitiesP
         ))}
       </Stack>
       <Stack spacing={1}>
-        {col2.map((mode) => (
-          <HStack>
+        {col2.map((mode, index) => (
+          <HStack key={index}>
             <Badge
               colorScheme={
                 legalities.includes(mode.toLocaleLowerCase())
