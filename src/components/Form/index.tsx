@@ -6,13 +6,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { UseMutationResult } from "react-query";
 import { useState } from "react";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { useEdgeStore } from "../../lib/edgestore";
 
 type SignInFormData = {
     name?: string;
     email: string;
     password: string;
     confirmPassword?: string;
-    profileImage?: Blob;
+    profileImage?: string;
 }
 
 interface FormProps {
@@ -27,8 +28,10 @@ export default function FormLogin({
     handleCreateAccount,
 }: FormProps) {
     const { isOpen, onToggle } = useDisclosure();
+    const { edgestore } = useEdgeStore();
+    
     const [image, setImage] = useState<string>();
-    const [imageBlob, setImageBlob] = useState<Blob>();
+    const [imageFile, setImageFile] = useState<string>();
 
     const signInFormSchema = yup.object({
         email: yup.string().required('E-mail obrigatório').email("E-mail inválido"),
@@ -46,15 +49,23 @@ export default function FormLogin({
         resolver: yupResolver(isOpen ? createAccountFormSchema : signInFormSchema)
     });
 
-    const changeImage = (blob: Blob) => {
+    const changeImage = async (file: File) => {
+        const blob = new Blob([file], { type: file.type })
         const url = URL.createObjectURL(blob);
-        setImageBlob(blob);
+        const imageResponse = await edgestore.publicImages.upload({
+            file,
+            options: {
+                temporary: true,
+            }
+          });
+
+        setImageFile(imageResponse.url);
         setImage(url);
     }
 
     const handleFormSubmit: SubmitHandler<SignInFormData> = async (data) => {
         isOpen
-            ? await handleCreateAccount.mutateAsync({ ...data, profileImage: imageBlob })
+            ? await handleCreateAccount.mutateAsync({ ...data, profileImage: imageFile })
             : await handleSignIn.mutateAsync(data);
     };
 
@@ -88,7 +99,7 @@ export default function FormLogin({
                             </AvatarBadge>
                         </Avatar>
                     </label>
-                    <input id="avatar" hidden type="file" onChange={async (e) => changeImage(new Blob([e.target.files[0]], { type: e.target.files[0].type }))} />
+                    <input id="avatar" hidden type="file" accept="image/png, image/gif, image/jpeg" onChange={async (e) => changeImage(e.target.files?.[0])} />
                 </HStack>
             </Collapse>
             <Stack spacing="4">

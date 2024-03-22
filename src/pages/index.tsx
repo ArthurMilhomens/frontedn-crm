@@ -7,17 +7,19 @@ import { useMutation } from 'react-query';
 import { queryClient } from '../service/queryClient';
 import router from 'next/router';
 import axios from 'axios';
+import { useEdgeStore } from '../lib/edgestore';
 
 type SignInFormData = {
   name?: string;
   email: string;
   password: string;
   confirmPassword?: string;
-  profileImage?: Blob;
+  profileImage?: string;
 }
 
 export default function SignIn() {
   const cookies = new Cookies();
+  const { edgestore } = useEdgeStore();
 
   const handleSignIn = useMutation(async (data: SignInFormData) => {
     const response = await api.post('users/login', {
@@ -37,18 +39,20 @@ export default function SignIn() {
   });
 
   const handleCreateAccount = useMutation(async (data: SignInFormData) => {
-    const formData = new FormData();
+    await edgestore.publicImages.confirmUpload({
+      url: data.profileImage
+    });
 
-    formData.append('image', data.profileImage);
-
-    const response = await api.post('users/create', {
+    const submitData = {
       email: data.email,
       name: data.name,
       password: data.password,
-    });
-    const imageResponse = await api.put(`users/image?id=${response.data.id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      profileImage: data.profileImage
+    };
 
-    cookies.set('user', imageResponse.data, { path: '/' });
+    const response = await api.post('users/create', submitData);
+
+    cookies.set('user', response.data, { path: '/' });
 
     return response.data
   }, {
