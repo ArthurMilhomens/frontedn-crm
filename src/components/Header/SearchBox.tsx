@@ -16,6 +16,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { useDebounce } from "use-debounce";
 import { getUsers } from "../../service/hooks/useUsers";
 import { useQuery } from "react-query";
+import Link from "next/link";
 
 export default function SearchBox() {
   const [inputValue, setInputValue] = useState("");
@@ -29,6 +30,7 @@ export default function SearchBox() {
   const { data } = useQuery({
     queryKey: ["users", debouncedValue],
     queryFn: () => getUsers({ search: debouncedValue }),
+    enabled: debouncedValue!== "" && debouncedValue!== undefined
   });
 
   return (
@@ -37,7 +39,7 @@ export default function SearchBox() {
       lazyBehavior="keepMounted"
       autoFocus={false}
       closeOnBlur={false}
-      isOpen={inputValue.length > 0}
+      isOpen={debouncedValue.length > 0}
     >
       <PopoverAnchor>
         <Flex
@@ -67,27 +69,30 @@ export default function SearchBox() {
           <PopoverContent border="none" bgColor="gray.800">
             <PopoverBody display="flex" flexDirection="column" p="0">
               {data?.users.map((user) => (
-                <Button
-                  bgColor="transparent"
-                  justifyContent="flex-start"
-                  py="6"
-                  _hover={{
-                    bgColor: "gray.700",
-                  }}
-                  _active={{
-                    bgColor: "gray.700",
-                  }}
-                >
-                  <Avatar
-                    size="sm"
-                    name={user?.name}
-                    bgColor="purple.500"
-                    src={user?.profileImage}
-                    mr="4"
-                  />
-                  <Text>{user?.name}</Text>
-                  <Icon ml="auto" as={FaUserPlus}/>
-                </Button>
+                <Link key={user.id} href={`/users/${user.id}`} passHref>
+                  <Button
+                    bgColor="transparent"
+                    justifyContent="flex-start"
+                    onClick={() => setInputValue("")}
+                    py="6"
+                    _hover={{
+                      bgColor: "gray.700",
+                    }}
+                    _active={{
+                      bgColor: "gray.700",
+                    }}
+                  >
+                    <Avatar
+                      size="sm"
+                      name={user?.name}
+                      bgColor="purple.500"
+                      src={user?.profileImage}
+                      mr="4"
+                    />
+                    <Text>{user?.name}</Text>
+                    <Icon ml="auto" as={FaUserPlus} />
+                  </Button>
+                </Link>
               ))}
             </PopoverBody>
           </PopoverContent>

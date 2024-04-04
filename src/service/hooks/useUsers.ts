@@ -1,9 +1,13 @@
 import { useQuery } from "react-query";
 import { api } from "../api";
-import { User } from "../../models/user";
+import { User, UserDetails } from "../../models/user";
 
 type GetUsersResponse = {
     users: User[];
+}
+
+type GetUserDetialsResponse = {
+    user: UserDetails;
 }
 
 type FilterParams = {
@@ -14,6 +18,12 @@ export async function getUsers({ search = "" }: FilterParams): Promise<GetUsersR
     const { data } = await api.get('/users?search=' + search);
 
     return { users: data }
+}
+
+export async function getUserDetails(id: string): Promise<GetUserDetialsResponse> {
+    const { data } = await api.get('/users/details?id=' + id);
+
+    return { user: data }
 }
 
 export function useUsers({ search = "" }: FilterParams) {

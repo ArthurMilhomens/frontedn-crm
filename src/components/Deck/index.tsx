@@ -19,6 +19,7 @@ import {
   useDisclosure,
   Flex,
   Divider,
+  AccordionItemProps,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { RiPencilLine } from "react-icons/ri";
@@ -44,12 +45,12 @@ interface CardDetail {
 //   cards: Card[];
 // }
 
-interface DeckProps {
+interface DeckProps extends AccordionItemProps {
   deck: TypeDeck;
   mark?: boolean;
 }
 
-export default function Deck({ deck, mark }: DeckProps) {
+export default function Deck({ deck, mark, ...props }: DeckProps) {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const [element, setElement] = useState<number | null>(null);
   const isWideVersion = useBreakpointValue({
@@ -72,6 +73,7 @@ export default function Deck({ deck, mark }: DeckProps) {
       pb="4"
       border="none"
       my="4"
+      {...props}
     >
       <AccordionButton>
         <HStack flex="1" textAlign="left" spacing="4">
@@ -86,7 +88,7 @@ export default function Deck({ deck, mark }: DeckProps) {
                   key={color}
                   w="4"
                   h="4"
-                  src={`mana/${color}.svg`}
+                  src={`../mana/${color}.svg`}
                   alt="Mana"
                 />
               ))}

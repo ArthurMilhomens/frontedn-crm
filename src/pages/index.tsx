@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import { Flex, Heading, useBreakpointValue } from '@chakra-ui/react';
 import Head from 'next/head';
 import FormLogin from '../components/Form';
 import Cookies from 'universal-cookie';
@@ -20,6 +20,10 @@ type SignInFormData = {
 export default function SignIn() {
   const cookies = new Cookies();
   const { edgestore } = useEdgeStore();
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   const handleSignIn = useMutation(async (data: SignInFormData) => {
     const response = await api.post('users/login', {
@@ -80,7 +84,7 @@ export default function SignIn() {
           backgroundSize="cover"
           p="20"
         >
-          <Heading
+          {isWideVersion && <Heading
             bgGradient='linear(to-l, #a0a0a0, #f7f7f7)'
             bgClip='text'
             fontSize='8xl'
@@ -88,7 +92,7 @@ export default function SignIn() {
             p="2"
           >
             MTG League
-          </Heading>
+          </Heading>}
           <FormLogin
             handleSignIn={handleSignIn}
             handleCreateAccount={handleCreateAccount}
