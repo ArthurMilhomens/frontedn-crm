@@ -12,5 +12,7 @@ export type UserDetails = {
     name: string;
     email: string;
     profileImage: string | null;
-    decks: TypeDeck[]
+    decks: TypeDeck[];
+    followedBy: string[];
+    following: string[];
 }

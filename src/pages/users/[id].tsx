@@ -21,7 +21,7 @@ import { RiAddLine } from "react-icons/ri";
 import Header from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
 import { useRouter } from "next/router";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getUserDetails } from "../../service/hooks/useUsers";
 import { useEffect, useState } from "react";
 import { UserDetails } from "../../models/user";
@@ -34,28 +34,53 @@ import { HiOutlineInbox } from "react-icons/hi";
 import { FiUserCheck } from "react-icons/fi";
 import Deck from "../../components/Deck";
 import HistoryTable from "../../components/HistoryTable";
+import { api } from "../../service/api";
 
 export default function User() {
   const router = useRouter();
   const cookies = new Cookies();
   const user = cookies.get("user");
-  const userId = user?.id;
+  const { id: userId, name: userName } = user;
   const isBaseVersion = useBreakpointValue({
     base: true,
     lg: false,
   });
   const [id, setId] = useState("");
-  const isFollowing = false;
-
+  const [isFollowing, setIsFollowing] = useState(false);
+  
   useEffect(() => {
     setId(router.query.id?.toString());
   }, [router.query.id?.toString()]);
-
+  
   const { data } = useQuery({
     queryKey: ["user-details", id],
     queryFn: () => getUserDetails(id),
     enabled: id !== "" && id !== undefined,
   });
+
+  useEffect(() => {
+    setIsFollowing(data?.user.followedBy.includes(userName))
+  }, [data]);
+
+  const handleFollow = useMutation(async () => {
+    await api.post(`users/follow?id=${id}`, {});
+  }, {
+    onSuccess: () => {
+      setIsFollowing(true);
+    }
+  });
+
+  const handleUnFollow = useMutation(async () => {
+    await api.post(`users/unfollow?id=${id}`, {});
+  }, {
+    onSuccess: () => {
+      setIsFollowing(false);
+    }
+  });
+
+  const submitFollow = () => {
+    isFollowing ? handleUnFollow.mutateAsync() : handleFollow.mutateAsync();
+  }
 
   return (
     <>
@@ -105,7 +130,7 @@ export default function User() {
                       textAlign="center"
                       color="gray.200"
                     >
-                      Segue 45
+                      Segue {data?.user.following.length}
                     </Text>
                     <Icon as={BsDot} color="gray.200" />
                     <Text
@@ -113,7 +138,7 @@ export default function User() {
                       textAlign="center"
                       color="gray.200"
                     >
-                      Seguidores 45
+                      Seguidores {data?.user.followedBy.length}
                     </Text>
                   </HStack>
                 </Stack>
@@ -125,6 +150,7 @@ export default function User() {
                         <Icon as={isFollowing ? FiUserCheck : FaUserPlus} />
                       }
                       colorScheme={isFollowing ? "green" : "blackAlpha"}
+                      onClick={submitFollow}
                       ml="auto !important"
                       mr={{
                         base: "20px !important",
@@ -143,6 +169,7 @@ export default function User() {
                         )
                       }
                       colorScheme={isFollowing ? "green" : "blackAlpha"}
+                      onClick={submitFollow}
                       ml="auto !important"
                       mr={{
                         base: "20px !important",

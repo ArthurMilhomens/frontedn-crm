@@ -57,6 +57,8 @@ export default function SignIn() {
     const response = await api.post('users/create', submitData);
 
     cookies.set('user', response.data, { path: '/' });
+    
+    api.defaults.headers.common['Authorization'] = `${response.data.accessToken}`
 
     return response.data
   }, {

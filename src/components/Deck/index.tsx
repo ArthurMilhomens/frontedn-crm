@@ -152,6 +152,7 @@ export default function Deck({ deck, mark, ...props }: DeckProps) {
                 bg="gray.700"
                 borderColor="gray.700"
                 display="flex"
+                boxShadow="dark-lg"
                 flexDirection={isWideVersion ? "row" : "column"}
                 w={[300, 600]}
                 h={[600, 444]}
