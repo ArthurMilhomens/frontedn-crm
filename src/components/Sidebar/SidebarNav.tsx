@@ -5,19 +5,20 @@ import { GiStack, GiTrophyCup } from "react-icons/gi";
 import NavLink from "./NavLink";
 import NavSection from "./NavSection";
 import { HiOutlineInbox } from "react-icons/hi";
+import { TbSwords } from "react-icons/tb";
 
 export default function SidebarNav(){
   return (
     <Stack spacing="12" align="flex-start">
-        <NavSection title="INFO">
+        <NavSection title="MAIN">
           <NavLink href="/dashboard" icon={MdDashboard}>Dashboard</NavLink>
-          <NavLink href="/users" icon={RiContactsFill}>Usuários</NavLink>
+          {/* <NavLink href="/users" icon={RiContactsFill}>Usuários</NavLink> */}
           <NavLink href="/cards" icon={MdConstruction}>Cartas</NavLink>
           <NavLink href="/decks" icon={HiOutlineInbox}>Decks</NavLink>
         </NavSection>
-        <NavSection title="SEASONS">
-          <NavLink href="/current-season" icon={GiTrophyCup}>Atual</NavLink>
-          <NavLink href="/seasons" icon={GiStack}>Todos</NavLink>
+        <NavSection title="JOGOS">
+          <NavLink href="/matches" icon={TbSwords}>Partidas</NavLink>
+          <NavLink href="/championships" icon={GiTrophyCup}>Campeonatos</NavLink>
         </NavSection>
       </Stack>
   );

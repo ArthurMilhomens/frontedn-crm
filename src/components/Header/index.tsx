@@ -1,9 +1,9 @@
-import { Flex, Icon, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Icon, IconButton, useBreakpointValue, Image } from "@chakra-ui/react";
 import { RiMenuLine } from "react-icons/ri";
 import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
-import Logo from "./Logo";
 import Profile from "./Profile";
 import SearchBox from "./SearchBox";
+import Logo from "../../../public/logo.svg"
 
 export default function Header() {
     const { onOpen } = useSidebarDrawer();
@@ -36,7 +36,7 @@ export default function Header() {
 
                 </IconButton>
             )}
-            {isWideVersion && <Logo />}
+            {isWideVersion && <Image maxH="8" src={Logo.src} />}
             <SearchBox />
             <Flex align="center" ml="auto">
                 <Profile showProfileData={isWideVersion} />
